@@ -7,6 +7,13 @@ import numpy as np
 from collections import defaultdict
 
 
+# def df_empty(column, dtypes, index=None):
+#     df = pd.DataFrame(index=index)
+#     for c, d in zip(column, dtypes):
+#         df[c] = pd.Series(dtype=d)
+#     return df
+
+
 def xml_first():
     # pdf2xml to get the xml first
     try:
@@ -23,24 +30,29 @@ def xml_first():
 def xml_to_dataframe(xml_root, table_cell_props, total_no_of_rows):
     # table data is with font size 3.
     # each cell data is determined with 'LEFT' attribute reference.
-    table_data = defaultdict(list)
-    # col_vs_cell_prop = list(zip(range(len(table_cell_props.keys())), table_cell_props.keys()))
 
-    row_num = 0
+    df = pd.DataFrame('', index=range(total_no_of_rows),
+                      columns=['Booking Date', 'Txn Date', 'Booking Text', 'Value Date',
+                               'Debit', 'Credit', 'Balance'])
+    # print(df.ndim, df.size, df.shape)
+    row_num = -1
     for item in xml_root.findall('./page'):
         prev_cell_prop = sys.maxsize
         for child in item:
             if child.tag == 'text' and child.attrib['font'] == '3':
+                if int(child.attrib['left']) < int(prev_cell_prop):
+                    row_num += 1
                 for cell_prop in table_cell_props:
                     # check for the range to see which column it fits
-                    if int(child.attrib['left']) < int(prev_cell_prop):
-                        row_num += 1
-                    if int(child.attrib['left']) in range(int(cell_prop) - 30, int(cell_prop) + 30):
-                        table_data[table_cell_props[cell_prop]].append({str(row_num): child.text})
-                    prev_cell_prop = child.attrib['left']
+                    if int(child.attrib['left']) in range(int(cell_prop) - 55, int(cell_prop) + 55):
+                        # print(df.loc[row_num, table_cell_props[cell_prop]], child.text)
+                        if df.loc[row_num, table_cell_props[cell_prop]]:
+                            df.loc[row_num, table_cell_props[cell_prop]] += '\r\n'+child.text
+                        else:
+                            df.loc[row_num, table_cell_props[cell_prop]] = child.text
 
-                    # prev_cell_prop = child.attrib['left']
-    print(table_data)
+                    prev_cell_prop = child.attrib['left']
+    df.to_excel('output.xlsx', index=False)
 
 
 def parse_xml_file():
@@ -74,5 +86,5 @@ def parse_xml_file():
 
 
 if __name__ == '__main__':
-    # xml_first()
+    xml_first()
     parse_xml_file()
