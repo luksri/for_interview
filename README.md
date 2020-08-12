@@ -1,2 +1,2 @@
 # for_interview
-Programming for company interviews
+This space is for programming for interview purposes.

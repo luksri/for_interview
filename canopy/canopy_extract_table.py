@@ -8,6 +8,10 @@ from dateutil.parser import parse
 
 
 def generate_pdf_to_xml():
+    """
+    Function to create the xml from a PDF using Poppler utilities.
+    :return: None. Generates the xml file in the current working directory.
+    """
     # pdf2xml to get the xml first
     try:
         obj = subprocess.Popen(
@@ -21,6 +25,21 @@ def generate_pdf_to_xml():
 
 
 def pdf_table_recreate(xml_root, table_cell_props, total_no_of_rows):
+    """
+    Function to recreate the table in PDF. Table contents have fixed attributes in xml such as
+    'font' -  3 is for table data. Rest can be ignored.
+    For Recreation, we should take a reference. In XML:
+        <text top="XXX" left="XXX" width="XXX" height="XXX" font="X">
+    This function considered 'LEFT' as reference to fill the table data. In order to fill all the columns of the table,
+    we extracted the 'LEFT' attributes of the table headings. while processing the each xml tag, each of the 'LEFT' value
+    is compared whether it falls in certain range. For example: this function considered 'LEFT'-55 and 'LEFT'+55 as range.
+    if true, we fill the table with the data.
+
+    :param xml_root: XML object
+    :param table_cell_props: a dict of table headings with their 'LEFT' attribute values.
+    :param total_no_of_rows: no of rows table data in xml file.
+    :return: returns Pandas Dataframe contains entire table data.
+    """
     # table data is with font size 3.
     # each cell data is determined with 'LEFT' attribute reference.
 
@@ -48,6 +67,11 @@ def pdf_table_recreate(xml_root, table_cell_props, total_no_of_rows):
 
 
 def parse_xml_file():
+    """
+    Function to parse the xml file. Table contents have fixed attributes in xml such as
+    'font' - 2 is for table headings. Rest can be ignored.
+    :return: pandas Dataframe with recreated table data
+    """
     # check whether xml file has been created or not
     if os.path.isfile('./canopy_technical_test_output.xml'):
         table_headings = list()
@@ -79,6 +103,11 @@ def parse_xml_file():
 
 
 def format_date(entry):
+    """
+    Function to format the date in YYYY/mm/dd
+    :param entry: pandas series element to change the format
+    :return: date as string
+    """
     try:
         obj = parse(entry)
         return obj.strftime('%Y/%m/%d')
@@ -88,6 +117,11 @@ def format_date(entry):
 
 
 def format_int(entry):
+    """
+     Function to format the float of number to integer
+    :param entry: pandas series element to change the format
+    :return: int
+    """
     try:
         entry = entry.replace(',', '')
         entry = int(float(str(entry)))
@@ -98,6 +132,11 @@ def format_int(entry):
 
 
 def format_output(df):
+    """
+    Function to format the recreated table according to problem statement.
+    :param df: pandas dataframe contains recreated table data
+    :return: None. output is written to excel sheet.
+    """
     df['Booking Date'] = df['Booking Date'].map(format_date)
     df['Txn Date'] = df['Txn Date'].map(format_date)
     df['Value Date'] = df['Value Date'].map(format_date)
