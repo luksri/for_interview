@@ -104,7 +104,7 @@ def format_date(entry):
         return obj.strftime('%Y/%m/%d')
     except Exception as e:
         # print('exception is ' + str(e))
-        pass
+        return
 
 
 def format_int(entry):
@@ -119,7 +119,7 @@ def format_int(entry):
         return entry
     except Exception as e:
         # print('exception is ' + str(e))
-        pass
+        return
 
 
 def format_output(df):
