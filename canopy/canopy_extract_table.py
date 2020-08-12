@@ -20,8 +20,8 @@ def generate_pdf_to_xml():
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         out, err = obj.communicate()
-    except:
-        print("an exception occured " + str(sys.exc_info()))
+    except Exception as e:
+        print("an exception occured " + str(e))
 
 
 def pdf_table_recreate(xml_root, table_cell_props, total_no_of_rows):
@@ -102,8 +102,8 @@ def format_date(entry):
     try:
         obj = parse(entry)
         return obj.strftime('%Y/%m/%d')
-    except:
-        # print('exception is ' + str(sys.exc_info()))
+    except Exception as e:
+        # print('exception is ' + str(e))
         pass
 
 
@@ -117,8 +117,8 @@ def format_int(entry):
         entry = entry.replace(',', '')
         entry = int(float(str(entry)))
         return entry
-    except:
-        # print('exception is ' + str(sys.exc_info()))
+    except Exception as e:
+        # print('exception is ' + str(e))
         pass
 
 
