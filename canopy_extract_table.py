@@ -7,7 +7,7 @@ import numpy as np
 from dateutil.parser import parse
 
 
-def xml_first():
+def generate_pdf_to_xml():
     # pdf2xml to get the xml first
     try:
         obj = subprocess.Popen(
@@ -20,7 +20,7 @@ def xml_first():
         print("an exception occured " + str(sys.exc_info()))
 
 
-def xml_to_dataframe(xml_root, table_cell_props, total_no_of_rows):
+def pdf_table_recreate(xml_root, table_cell_props, total_no_of_rows):
     # table data is with font size 3.
     # each cell data is determined with 'LEFT' attribute reference.
 
@@ -72,7 +72,7 @@ def parse_xml_file():
                         table_headings_references[child.attrib['left']] = child.text
                     elif child.attrib['font'] == '3':
                         no_of_rows += 1
-        return xml_to_dataframe(root, table_headings_references, no_of_rows)
+        return pdf_table_recreate(root, table_headings_references, no_of_rows)
     else:
         print('You need to generate the xml file')
         return
@@ -108,7 +108,7 @@ def format_output(df):
 
 
 if __name__ == '__main__':
-    xml_first()
+    generate_pdf_to_xml()
     df = parse_xml_file()
     df.replace('', np.nan, inplace=True)
     df.dropna(axis=0, how='all', inplace=True)
