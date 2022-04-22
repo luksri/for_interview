@@ -34,7 +34,7 @@ Pillow==7.2.0
 pycparser==2.20
 pycryptodome==3.9.8
 pyparsing==2.4.7
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 pytesseract==0.3.5
 python-dateutil==2.8.1
 pytz==2020.1
