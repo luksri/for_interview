@@ -22,7 +22,7 @@ kiwisolver==1.2.0
 kombu==4.6.11
 MarkupSafe==1.1.1
 matplotlib==3.3.0
-numpy==1.19.1
+numpy==1.22.0
 opencv-python==4.3.0.38
 openpyxl==3.0.4
 pandas==1.1.0
