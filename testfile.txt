@@ -1,0 +1,10 @@
+Global ID
+TP
+L033SDI
+L033SelectedMode
+L033Frequency
+L033Channel
+L033SSM
+GLSEnabled
+ILSFailure
+L271ILSModeStatus
