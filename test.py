@@ -46,3 +46,4 @@ print(dict1)
 print(dict2)
 dict2['name:']='lakshman'
 print(dict2)
+print(dict1)

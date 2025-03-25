@@ -12,15 +12,15 @@ class entry_exit(object):
 def fun1():
     print("inside func1")
 
-@entry_exit
-def func2():
-    print("inside func2")
+# @entry_exit
+# def func2():
+#     print("inside func2")
 
 def fun3():
     print("inside fun3")
 
 fun1()
-#func2()
+# func2()
 
 # f = entry_exit(fun3)
-#f()
+# f()
